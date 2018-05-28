@@ -1,0 +1,22 @@
+{% load admin_static admin_list i18n %}
+<table>
+    <thead>
+        <tr>
+            <th><div class="text">{% trans "Name" %}</div></th>
+            <th><div class="text">{% trans "Value" %}</div></th>
+        </tr>
+    </thead>
+    {% for item in config_values %}
+    <tr>
+        <th style="width:400px">
+            {{ item.help_text|linebreaksbr }}</div>
+        </th>
+
+        <td style="width:400px">
+            {{ item.form_field.errors }}
+            {{ item.form_field }}
+        </td>
+
+    </tr>
+    {% endfor %}
+</table>

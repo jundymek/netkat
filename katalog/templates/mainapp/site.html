@@ -1,0 +1,78 @@
+<!DOCTYPE html> {% extends "mainapp/base.html" %} {% load staticfiles %}
+
+<head>
+    {% block title %}
+    <title>{{ site.name }}</title>
+    {% endblock title %} {% block keywords %}
+    <meta name="keywords" content="{{site.keywords}}" /> {% endblock keywords %} {% block description %}
+    <meta name="description" content="{{description|safe|striptags}}" /> {% endblock description %}
+</head>
+
+<body>
+    {% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="/{{category.slug}}/">{{ category }}</a></li>
+        <li><a href="/{{subcategory.category.slug}}/{{subcategory.slug}}">{{ subcategory.subcategory_name}}</a></li>
+        <li class="active">{{site.name}}</li>
+    </ol>
+    {% endblock breadcrumb %} {% block mainbar %}
+    <h3>{{ site.name }}</h3>
+    <table class="table table-responsive">
+        <tbody>
+            <tr>
+                <td><img style="float:left; padding:10px; max-width:300px" src="{{ site.get_thumb }}" alt="">{{ site.description|safe }} </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3>Szczegóły wpisu:</h3>
+    <table class="table table-responsive">
+        <thead>
+            <tr>
+                <td>ID:</td>
+                <th>{{site.id}}</th>
+            </tr>
+            <tr>
+                <td>URL:</td>
+                <th><a href="{{site.url}}">{{site.url}}</a></th>
+            </tr>
+            <tr>
+                <td>Tytuł:</td>
+                <th>{{site.name}}</th>
+            </tr>
+            <tr>
+                <td>Data dodania:</td>
+                <th>{{site.date}}</th>
+            </tr>
+            <tr>
+                <td>Słowa kluczowe:</td>
+                <th>{% for tag in keywords %}
+                    {% if forloop.last %}
+                        <a style="" href="{% url 'tags' tag|slugify  %}">{{ tag }}</a>
+                    {% else %}
+                        <a style="" href="{% url 'tags' tag|slugify  %}">{{ tag }}</a>, 
+                    {% endif %}{% endfor %}
+                </th>
+            </tr>
+            <tr>
+                <td>Kategorie:</td>
+                <th><a href="/{{category.slug}}/">{{ category }}</a> <span class="dodano">>> </span><a href="/{{subcategory.category.slug}}/{{subcategory.slug}}">{{ subcategory.subcategory_name}}</a></th>
+            </tr>
+            {% if site.category1 %}
+            <tr>
+                <td>Kategorie dodatkowe: </td>
+                <th><a href="/{{site.category1.slug}}/">{{ site.category1 }}</a> <span class="dodano">>> </span> <a href="/{{site.category1.slug}}/{{site.subcategory1.slug}}">{{ site.subcategory1}}</a></th>
+            </tr>
+            {% endif %}
+            <tr>
+                <td><img src="{% static "images/premium_icon.png" %}" alt="Premium icon" width="80"></img></td>
+                <th><a class="premium-wpis" href="{% url 'premium' id=site.id %}">Wyróżnij stronę w katalogu zmieniając grupę wpisu</a></th>
+                
+            </tr>
+        </thead>
+    </table>
+
+    {% endblock mainbar %}
+</body>
+
+</html>

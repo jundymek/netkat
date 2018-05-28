@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+{% extends "mainapp/base.html" %}
+{% load cache %}
+{% load staticfiles %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        {% block title %}
+            <title>{{ config.SITE_TITLE }}</title>
+        {% endblock title %}
+        
+    </head>
+    <body>
+        {% block catalog_desc %}
+            <h3>{{ config.SITE_TITLE }}</h3>
+            <hr>
+            {{ desc|safe }}
+        {% endblock catalog_desc %}
+        {% block mainbar %}
+            <h3>Kategorie</h3>
+            <hr>
+            {% if categories %}
+                {% for category in categories %}
+                    <div class= "{% cycle 'col-md-6 cell' 'col-md-6 cell'%}">
+                        <span class="glyphicon glyphicon-folder-open" style="padding-right:10px"></span>
+                        <a class="category_link" href="/{{ category.slug }}">{{ category.category_name }}</a>
+                        <div class="media-left">
+                            <img class="media-object" src="{{category.image_thumb}}" alt="Obrazek {{ category.category_name }}" height="42" width="42">
+                        </div>
+                        <div class="media-body">
+                            {% for subcategory in category.subcategory.all %}
+                            {% if forloop.counter < 4 %}
+                                <li>
+                                    <a class="subcategory_link" href="/{{category.slug}}/{{subcategory.slug}}">
+                                        {{ subcategory.subcategory_name }}
+                                        ({{ subcategory.get_active_sites.count }})
+                                    </a>
+                                </li>
+                            {% endif %}  
+                            {% endfor %}
+                            <a class="pozostale" href="/{{category.slug}}/">Pozostałe subkategorie >></a>
+                        </div><br>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Brak kategorii do wyświetlenia</p>
+            {% endif %}
+            <div class="col-sm-12">
+                <h3>Ostatnio dodane strony</h3>
+                    {% for site in sites|dictsortreversed:"group_id" %}
+                    {% if site.group_id == 2 and forloop.counter < 3%}
+                    <div class="col-sm-12">
+                        <table class="table table-responsive">
+                            <tbody>    
+                                <tr class="bg-text success">
+                                <td><a href="{{ site.get_absolute_url }}">
+                                    {{ site.name }}</a>
+                                    <p class="dodano">Dodano: {{ site.date }}</p>
+                                    <img class="base-thumb" src="{{ site.get_thumb }}" alt="{{ site.name }}">
+                                    <p align="justify">{% if config.EDYTOR_WYSWIG == 'tak' %}{{ site.description|striptags|safe }}
+                                    {% else %}{{ site.description|striptags }}    
+                                    {% endif %}</p>
+                                    <p class="dodano"><a href="{{ site.get_absolute_url }}">
+                                    szczegóły wpisu >></a></p>
+                                </td>
+                                </tr>
+                            </tbody>
+                        </table> 
+                    </div>
+                    {% else %}
+                    <div class="{% if site.group_id == 2 %}bg-text{% endif %} col-sm-6" data-bg-text="premium" style="min-height:220px;">
+                    <a href="{{ site.get_absolute_url }}">
+                        {{ site.name|capfirst|truncatechars:50 }}</a>
+                        <p class="dodano">Dodano: {{ site.date }}</p>
+                        <img class="base-thumb" src="{{ site.get_thumb }}" alt="{{ site.name }}">
+                        <p align="justify">{% if config.EDYTOR_WYSWIG == 'tak' %}{{ site.description|striptags|safe|truncatechars:110 }}
+                                    {% else %}{{ site.description|truncatechars:110|striptags }}    
+                                    {% endif %}</p>  
+                        <p class="dodano"><a href="{{ site.get_absolute_url }}">
+                                    szczegóły wpisu >></a></p> 
+                    </div>
+                    {% endif %}
+                    {% endfor %}         
+            </div>  
+        {% endblock mainbar %}
+</body>
+</html>

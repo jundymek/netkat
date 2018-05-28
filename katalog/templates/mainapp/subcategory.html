@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+{% extends "mainapp/base.html" %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+<html lang="en">
+    <head>
+        {% block title %}
+        <title>{{ config.SITE_TITLE }} -- subkategoria {{ subcategory.subcategory_name }}</title>
+        {% endblock title %}
+        {% block keywords %}
+            <meta name="keywords" content="{{ keywords }}" />
+        {% endblock keywords %}
+        {% block description %}
+            <meta name="description" content="{{category.category_description}}" />
+        {% endblock description %}   
+    </head>
+    <body>
+        {% block tags %}
+        <h3>Tagi dla subkategorii {{ subcategory.subcategory_name }}</h3><hr>     
+        {% endblock tags %}
+        {% block breadcrumb %}
+            <ol class="breadcrumb">
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="/{{subcategory.category.slug}}/">{{ category }}</a></li>
+                <li>{{ subcategory.subcategory_name }}</li>
+            </ol>
+        {% endblock breadcrumb %}
+        {% block mainbar %}
+            {% if messages %} 
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endif %}
+                <h3>Strony dla subkategorii {{ subcategory.subcategory_name }}</h3><hr>
+                {% if sites %}
+                    <table class="table table-responsive">
+                    {% for site in sites %}
+                        <div class="{% if site.group_id == 2 %}bg-text{% endif %} col-sm-6" data-bg-text="premium" style="min-height:220px;">
+                            <a href="{{ site.get_absolute_url }}">
+                                {{ site.name|capfirst|truncatechars:50 }}</a>
+                                <p class="dodano">Dodano: {{ site.date }}</p>
+                                <img class="base-thumb" src="{{ site.get_thumb }}" alt="{{ site.name }}">
+                                <p align="justify">{{ site.description|striptags|safe|truncatechars:110 }}</p>   
+                                <p class="dodano"><a href="{{ site.get_absolute_url }}">
+                                            szczegóły wpisu >></a></p> 
+                        </div>
+                    {% endfor %}
+                    </table>
+                    {% if sites.has_other_pages %}
+                      <ul class="pagination pagination-sm">
+                        {% if sites.has_previous %}
+                          <li><a href="?page={{ sites.previous_page_number }}">&laquo;</a></li>
+                        {% else %}
+                          <li class="disabled"><span>&laquo;</span></li>
+                        {% endif %}
+                        {% for i in sites.paginator.page_range %}
+                          {% if sites.number == i %}
+                            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                          {% else %}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                          {% endif %}
+                        {% endfor %}
+                        {% if sites.has_next %}
+                          <li><a href="?page={{ sites.next_page_number }}">&raquo;</a></li>
+                        {% else %}
+                          <li class="disabled"><span>&raquo;</span></li>
+                        {% endif %}
+                      </ul>
+                    {% endif %}  
+                {% else %}
+                <p>Brak stron w wybranej subkategorii</p>  
+                {% endif %}
+                <div class="add_site">
+                    <h3>Dodaj stronę</h3><hr>
+                    <form method="post" action="" class="form-inline">
+                        {% csrf_token %}
+                        {% bootstrap_form form layout='inline'%}
+                        <button type="submit">Zatwierdź</button>
+                    </form>
+                </div>
+        {% endblock %}
+    </body>
+</html>

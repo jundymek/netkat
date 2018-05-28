@@ -1,0 +1,1 @@
+default_app_config = 'constance.backends.database.apps.ConstanceConfig'

@@ -1,0 +1,18 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_urls admin_static admin_list %}
+{% block object-tools-items %}
+
+    {{ block.super }}
+    <li>
+        <a href="run_cron_jobs/" id="check" class="grp-state-focus addlink check_sites_button">Sprawdź strony w bazie</a>
+    </li>
+
+{% endblock %}
+{% block filters %}
+        {% if cl.has_filters %}
+          <div id="changelist-filter">
+            <h2>{% trans 'Filtrowanie' %}</h2>
+            {% for spec in cl.filter_specs %}{% admin_list_filter cl spec %}{% endfor %}
+          </div>
+        {% endif %}
+      {% endblock %}

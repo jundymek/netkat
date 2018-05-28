@@ -1,0 +1,69 @@
+.footer {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.red_label {
+    color:red !important;
+}
+
+.premium {
+    /*border-style: solid;
+    border-width: 3px 0 3px 0;
+    border-color: #B7B83C;
+    background-color: lightblue !important;
+    position: relative;
+    overflow: hidden;*/
+}
+.premium::after {
+    color: red;
+    content: "Premium";
+    display: block;
+    font-size: 40px;
+    line-height: 1;
+    transform:rotate(25deg);
+    position: relative;
+    bottom: -20px;
+    right: 20px;
+    opacity: 0.2;
+}
+
+.constance_buttons {
+    text-align:center
+}
+
+.check_sites_button {
+    border-style: solid;
+    border-width: medium;
+    border-color: red;
+}
+
+.change-list .filtered .results {
+    width: auto;
+    margin-right: 0px;
+}
+
+.img_logo_footer {
+    position: absolute;
+    margin: 0px 0 0 5px;
+}
+
+td.field-keywords {
+    max-width: 250px !important;
+}
+
+td.field-get_desc {
+    max-width: 250px !important;
+}
+
+th.field-name {
+    max-width: 150px !important;
+}
+
+.admin_back {
+    color:blue !important;
+}
+
+#email_deletion > select {
+    color: #ccc !important;
+}

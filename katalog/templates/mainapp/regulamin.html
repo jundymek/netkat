@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+{% extends "mainapp/base.html" %}
+{% load cache %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        {% block title %}
+            <title>{{ config.SITE_TITLE }}</title>
+        {% endblock title %}  
+    </head>
+    {% block menu %}
+        <li><a href="{% url 'index' %}" title="Powrót do strony głównej">Home <span class="sr-only">(current)</span></a></li>
+        <li class="active"><a href="{% url 'regulamin' %}" title="Regulamin katalogu">Regulamin</a></li>
+        <li><a href="{% url 'contact' %}" title="Formularz kontaktowy">Kontakt</a></li>
+    {% endblock menu %}
+    <body>
+        {% block mainbar %}
+           <h3>Regulamin:</h3><hr>
+         <ol>
+          <li>Każdy może zgłosić wpis do katalogu <b>netnet24.eu</b>.</li>
+          <li>Dodawanie wpisów jest bezpłatne</li>
+          <li>Każdy wpis jest indywidualnie rozpatrywany przez administratora katalogu.</li>
+          <li>Rodzaje wpisów</li>
+          <ul class="site">
+          <li class="in"><b>Wpis zwykły</b><br>
+              - wpis może znajdować się w 1 kategorii<br></li>
+          <li class="in"><b>Wpis premium - 2,46 PLN z VAT - płatny za pomocą SMS</b><br>
+              - Wpis może znajdować się w 2 kategoriach<br>
+              - Wpis najwyżej w swoich podkategoriach<br>
+              - Wpis najwyżej w swoich kategoriach<br>
+              - Wpis najwyżej na stronie głównej katalogu<br>
+              - Link do strony rotacyjnie w okienku reklamowym<br>
+              - Wpis dodatkowo wyróżniony kolorystycznie<br></li>
+          <li>Opłata za wpisy płatne pobierana jest za <b>rozpatrzenie wpisu</b>. Przed zakupieniem kodu sporządź opis zgodny z regulaminem katalogu i sprawdź czy strona spełnia wymagania. Jeśli masz wątpliwości skontaktuj się z nami.</li>
+          <li>Usługę obsługuje Eurokoncept, grupa Dotpay - regulamin znajduje się <a href="http://www.dotpay.pl/regulamin-serwisow-sms-premium/" target="_blank">tutaj</a>.</li>
+          <li>Usługa dostępna jest w sieciach telefonii komórkowej T-mobile, Plus GSM, Orange, Play.</li>
+          <li>Ewentualne reklamacje można składać na stronie <a href="http://www.dotpay.pl/kontakt/uslugi-sms-premium/" target="_blank">Dotpay</a>.</li>
+          <li>Dodawanie stron sprzecznych z polskim prawem <b>jest zabronione</b>. Nie akceptujemy witryn propagujących hazard, przeznaczonych wyłącznie dla dorosłych, posiadających odnośniki do takich stron.</li>
+          <li><b>Nie akceptujemy</b> opisów wygenerowanych automatycznie, posiadających błędy ortograficzne, stylistyczne.</li>
+          <li><b>Nie dodajemy</b> stron w budowie.</li>
+          <li>Wpisy dodajemy do <b>właściwych</b> kategorii.</li>
+          <li>Opis dodawanej strony <b>nie może być zlepkiem słów kluczowych</b>. Musi to być sensowny opis zawartości witryny w formie opisowej.</li>
+          <li>Administrator katalogu <b>nie odpowiada</b> za treść linków i stron, do których one prowadzą.</li>
+          <li>Zastrzegamy sobie prawo do modyfikacji i usunięcia wpisów, które w ocenie moderatora są mało wartościowe, nie spełniają wymogów regulaminu.</li>
+          <li>W przypadku konieczności skontaktowania się z właścicielem serwisu prosimy o kontakt poprzez <a href="{% url 'contact' %}">formularz kontaktowy</a>.</li>
+          <li>Zgłoszenie strony do katalogu jest równoznaczne z akceptację niniejszego regulaminu.</li>
+          <li>Właściciel katalogu zastsrzega sobie prawo do zmiany regulaminu - w takim przypadku nowy regulamin obowiązuje z chwilą jego opublikowania.</li>
+          <li>Właścicielem katalogu jest NETFIRMA MONIKA DYMEK z siedzibą w Warszawie ul. Kazury 16/118, NIP:726-248-28-77.</li>
+         </ol>
+        {% endblock mainbar %}
+    </body>
+</html>

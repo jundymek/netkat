@@ -1,0 +1,43 @@
+<!DOCTYPE html> {% extends "mainapp/base.html" %} {% load staticfiles %} {% load bootstrap3 %} {% bootstrap_css %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"> {% block title %}
+    <title>Dodawanie {{ url }}</title>{% endblock title %}
+    <script>
+    window.CKEDITOR_BASEPATH = '/static/ckeditor/ckeditor/';
+    </script>
+    {{ block.super }}
+    {% block js %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="{% static "js/main.js" %}"></script>
+
+        <!-- bxSlider Javascript file -->
+        <script src="{% static "js/jquery.bxslider.min.js" %}"></script>
+        <script src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
+
+        <!-- jquery-confirm alertbox -->
+        <script src="{% static "js/jquery-confirm.min.js" %}"></script>
+        <script src="{% static "js/add_site.js" %}"></script>
+    {% endblock js %}
+</head>
+
+<body>
+    {% block mainbar %} {{ siteurl }}
+    <script type="text/javascript">
+    var title_length_max = {{ js_data_title_max }};
+    var title_length_min = {{ js_data_title_min }};
+    var key_length_max = {{ js_data_keywords_max }};
+    var key_length_min = {{ js_data_keywords_min }};
+    var desc_length_max = {{ js_data_description_max }};
+    var desc_length_min = {{ js_data_description_min }};
+    var wyswig = {{ wyswig | safe }};
+    </script>
+    <form method="post" id="formularz" action="" class="form-horizontal">
+        {{ form_extended.media }} {% csrf_token %} {% bootstrap_form form_extended layout='horizontal'%} {% bootstrap_button "Zatwierdź" size='large' button_type="submit" button_class="btn-primary btn-main-add" %}
+    </form>
+    {% endblock mainbar %}
+</body>
+</html>

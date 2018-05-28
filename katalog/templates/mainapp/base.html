@@ -1,0 +1,204 @@
+{% load google_analytics %}
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en">
+    <head>
+    {% block title %}<title>{{config.SITE_TITLE}}</title>{% endblock title %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block head_css %}
+        <link rel="shortcut icon" href="{% static 'images/favicon.png' %}"/>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"/>
+        <link href="https://fonts.googleapis.com/css?family=Audiowide" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="{% static 'css/mystyle.css' %}"/>
+        <!-- bxSlider CSS file -->
+        <link href="{% static 'css/jquery.bxslider.css' %}" rel="stylesheet" />
+
+        <link rel="stylesheet" href="{% static 'css/jquery-confirm.min.css' %}"/>
+        
+    {% endblock head_css %}
+    {% block keywords %}
+        <meta name="keywords" content="{{config.SITE_KEYWORDS}}" />
+    {% endblock keywords %}
+    {% block description %}
+        <meta name="description" content="{{config.SITE_DESCRIPTION}}" />
+    {% endblock description %}
+    {% block js %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="{% static "js/main.js" %}"></script>
+
+        <!-- bxSlider Javascript file -->
+        <script src="{% static "js/jquery.bxslider.min.js" %}"></script>
+        <script src="{% static 'smart-selects/admin/js/chainedfk.js' %}"></script>
+
+        <!-- jquery-confirm alertbox -->
+        <script src="{% static "js/jquery-confirm.min.js" %}"></script>
+    {% endblock js %}
+    <script>
+    var GROUP_OBJECT_CATEGORY = "{{group}}";
+    var title_length_max = {{ js_data_title_max }};
+    var title_length_min = {{ js_data_title_min }};
+    var key_length_max = {{ js_data_keywords_max }};
+    var key_length_min = {{ js_data_keywords_min }};
+    var desc_length_max = {{ js_data_description_max }}
+    var desc_length_min = {{ js_data_description_min }}
+    var base_group_text = {{ js_data_text_group_base|safe}};
+    var premium_group_text = {{ js_data_text_group_premium|safe}};
+    var wyswig = {{ wyswig|safe }};
+    </script>
+{% google_analytics %}
+</head>
+<body>
+    <div class="container top">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid top">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <a  href="{% url 'index' %}"><img src="{% static "/images/netnet_logo1.png" %}" title="netnet24.eu" /></a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav" style="margin-left:50px">
+                    {% block menu %}
+                        <li class="active"><a href="{% url 'index' %}" title="Strona główna">Home <span class="sr-only">(current)</span></a></li>
+                        <li><a href="{% url 'regulamin' %}" title="Regulamin katalogu">Regulamin</a></li>
+                        <li><a href="{% url 'contact' %}" title="Formularz kontaktowy">Kontakt</a></li>
+                    {% endblock menu %}
+                    </ul>
+                    <form class="navbar-form navbar-right">
+                        {% if user.is_authenticated %}<a href="{% url 'admin:index' %}" class="btn btn-info" role="button">Panel administracyjny</a> {% endif %}
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <p class="navbar-text">{% if user.is_authenticated %} Zalogowany jako: <b>{{ user.username }}</b> <br>
+                                <a href="{% url 'logout' %}">Wylogowanie</a> {% else %} Zaloguj się lub zarejestruj {% endif %} <br>
+                        </li>
+                        {% if not user.is_authenticated %}
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b>Logowanie/rejestracja</b> <span class="caret"></span></a>
+                            <ul id="login-dp" class="dropdown-menu">
+                                <li>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <form class="form" id="user_form" method="post" action="{% url 'login' %}">
+                                                {% csrf_token %}
+                                                <div class="form-group">
+                                                    <label class="sr-only">Login</label>
+                                                    <input type="text" class="form-control" name="username" placeholder="Login" required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="sr-only">Hasło</label>
+                                                    <input type="password" class="form-control" name="password" placeholder="Hasło" required>
+                                                    <div class="help-block text-right"><a href="">Zapomniałeś hasła ?</a></div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary btn-block">Zaloguj się</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="bottom text-center">
+                                            Nie masz jeszcze konta ? <a href="{% url 'register' %}"><b>Zarejestruj się</b></a>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% endif %}
+                            </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+        {% block breadcrumb %} {% endblock breadcrumb %}
+        <div class="row">
+            {% block sidebar %}
+            <div class="col-md-4">
+                <h3>Statystyki katalogu</h3>
+                <hr>
+                <table class="table table-responsive">
+                    <thead>
+                        <tr class="success">
+                            <td>Ilość kategorii</td>
+                            <td>{{ categories_all }}</td>
+                        </tr>
+                        <tr class="info">
+                            <td>Ilość podkategorii:</td>
+                            <td>{{ subcategories_all }}</td>
+                        </tr>
+                        <tr class="danger">
+                            <td>Ilość stron w katalogu</td>
+                            <td>{{ sites_active }}</td>
+                        </tr>
+                        <tr class="warning">
+                            <td>Ilość stron oczekujących:</td>
+                            <td>{{ sites_inactive}}</td>
+                        </tr>
+                    </thead>
+                </table>
+                {% block slider %} {% if config.BOX_PREMIUM == 'tak' %}
+                {% if sites_premium %}
+                <h3>Wyróżnione</h3>
+                <hr>
+                <ul class="bxslider" style="display:none">
+                    {% for site in sites_premium %}
+                    <li>
+                        <center><a target="_blank" href="{{ site.url }}">
+                                    {{ site.name }}</a></center>
+                        <img src="{{ site.get_thumb }}" width="300" /></li>
+                    {% endfor %}
+                </ul>
+                {% endif %} {% endif %}{% endblock slider %}
+                {% block tags %}
+                <h3>Słowa kluczowe</h3> <hr>
+                {% endblock tags %}
+                {% if tags %}
+                {% for tag, value in tags.items %}
+                {% if forloop.counter <= 30 or forloop.last%}
+                {% if forloop.last %}
+                    <a style="color: {{value.1}}; font-size: {{value.2}}px " href="{% url 'tags' tag|slugify  %}">{{ tag }}</a> ({{value.0}})
+                {% else %}
+                    <a style="color: {{value.1}}; font-size: {{value.2}}px " href="{% url 'tags' tag|slugify  %}">{{ tag }}</a> ({{value.0}}),
+                {% endif %}
+                {% endif %}
+                {% endfor %}  
+                {% endif %} <br><br>  
+                <img class="img-responsive center-block" src="{% static "/images/dotpay.png" %}" title="Dotpay" alt="Dotpay">
+            </div>
+            {% endblock sidebar %}
+            <div class="col-md-8">
+                {% if messages %} {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %} {% endif %} {% block catalog_desc %} {% endblock catalog_desc %} {% block mainbar %} {% endblock mainbar %}
+            </div>
+        </div>
+        <!--footer-->
+        {% block footer %}
+        <div class="footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="copyright">
+                            © 2017, netnet24.eu, All rights reserved
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="design">
+                            Napędzany przez skrypt <a href="https://www.netkat.pl"><img src="{% static "/images/netkat_logo.png" %}" width="70" /></a> </li>| Katalog ułatwiający moderację
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock footer %}
+</body>
+
+</html>

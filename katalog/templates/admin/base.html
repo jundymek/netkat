@@ -1,0 +1,106 @@
+{% load admin_static %}<!DOCTYPE html>
+{% load google_analytics %}
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>{% block title %}{% endblock %}</title>
+{% block stylesheet %}
+<link rel="shortcut icon" href="{% static 'images/favicon.png' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/base.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "admin/css/my_admin.css" %}" />
+{% endblock %}
+{% block extrastyle %}{% endblock %}
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "admin/css/ie.css" %}{% endblock %}" /><![endif]-->
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "admin/css/rtl.css" %}{% endblock %}" />{% endif %}
+<script type="text/javascript">window.__admin_media_prefix__ = "{% filter escapejs %}{% static "admin/" %}{% endfilter %}";</script>
+<script type="text/javascript">window.__admin_utc_offset__ = "{% filter escapejs %}{% now "Z" %}{% endfilter %}";</script>
+<script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+{% block extrahead %}
+{% endblock %}
+{% block blockbots %}{{ block.super }}{% endblock %}
+
+{% load i18n %}
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+
+<!-- Container -->
+<div id="container">
+    <script>
+    var GROUP_OBJECT_CATEGORY = "{{group}}";
+    var title_length_max = {{ js_data_title_max }};
+    var title_length_min = {{ js_data_title_min }};
+    var key_length_max = {{ js_data_keywords_max }};
+    var key_length_min = {{ js_data_keywords_min }};
+    var desc_length_max = {{ js_data_description_max }};
+    var desc_length_min = {{ js_data_description_min }};
+    var wyswig = {{ wyswig|safe }};
+    var base_group_text = {{ js_data_text_group_base|safe}};
+    var premium_group_text = {{ js_data_text_group_premium|safe}};
+    </script>
+{% google_analytics %}
+</head>
+    {% if not is_popup %}
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+            <h1 id="site-name">
+                <a href="{% url 'admin:index' %}"><img class="logo" src="/media/admin-interface/logo/netkat_logo.png" width="" height=""></a>
+                <span>Panel administracyjny</span>
+            </h1>
+        </div>
+        {% if user.is_active and user.is_staff %}
+        <div id="user-tools">
+            {% block welcome-msg %}
+                {% trans 'Welcome,' %}
+                <strong>{% firstof user.get_short_name user.get_username %}</strong>.
+            {% endblock %}
+            {% block userlinks %}
+                {% url 'django-admindocs-docroot' as docsroot %}
+                {% if docsroot %}
+                    <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
+                {% endif %}
+                {% if user.has_usable_password %}
+                <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+                {% endif %}
+                <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a><br>
+                <a class="admin_back" href="{% url 'index' %}">Powrót na stronę główną katalogu</a>
+            {% endblock %}
+        </div>
+        {% endif %}
+        {% block nav-global %}{% endblock %}
+    </div>
+    <!-- END Header -->
+    {% block breadcrumbs %}
+    <div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    {% if title %} &rsaquo; {{ title }}{% endif %}
+    </div>
+    {% endblock %}
+    {% endif %}
+
+    {% block messages %}
+        {% if messages %}
+        <ul class="messagelist">{% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}</ul>
+        {% endif %}
+    {% endblock messages %}
+
+    <!-- Content -->
+    <div id="content" class="{% block coltype %}colM{% endblock %}">
+        {% block pretitle %}{% endblock %}
+        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+        {% block content %}
+        {% block object-tools %}{% endblock %}
+        {{ content }}
+        {% endblock %}
+        {% block sidebar %}{% endblock %}
+        <br class="clear" />
+    </div>
+    <!-- END Content -->
+
+    {% block footer %}<div class="footer">Napędzany przez skrypt<a href="https://www.netkat.pl"><img class="img_logo_footer" src="{% static "/images/netkat_logo.png" %}" width="70" /></a> <span style="margin-left:75px"> v.1.0 | Katalog ułatwiający moderację</span></div>{% endblock %}
+</div>
+<!-- END Container -->
+<script type="text/javascript" src="{% static "admin/js/admin_js.js" %}"></script>
+</body>
+</html>

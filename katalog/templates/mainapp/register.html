@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% extends "mainapp/base.html" %}
+{% load cache %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        {% block title %}
+            <title>{{ config.SITE_TITLE }}</title>
+        {% endblock title %}
+        
+    </head>
+    <body>
+        {% block mainbar %}
+           <h3>Zarejestruj się</h3> 
+               {% if registered %}
+                   <p>Dziękuję za rejestrację!</p>
+                   <a href="{% url 'index' %}">Powrót do strony głównej</a><br>
+                {% else %}
+                <form id="user_form" method="post" action="{% url 'register' %}">
+
+                {% csrf_token %}
+
+                {% bootstrap_form user_form layout='vertical' %}
+                {% bootstrap_button "Zarejestruj" size='medium' button_type="submit" button_class="btn-primary" %}
+                </form>
+               {% endif %}
+        {% endblock mainbar %}
+    </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html> {% extends "mainapp/base.html" %} {% load staticfiles %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+<head>
+    {% block title %}
+    <title>{{ site.name }}</title>
+    {% endblock title %} {% block keywords %}
+    <meta name="keywords" content="{{site.keywords}}" /> {% endblock keywords %} {% block description %}
+    <meta name="description" content="{{description|safe|striptags}}" /> {% endblock description %}
+</head>
+
+<body>
+    {% block breadcrumb %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'index' %}">Home</a></li>
+        <li><a href="/{{category.slug}}/">{{ category }}</a></li>
+        <li><a href="/{{subcategory.category.slug}}/{{subcategory.slug}}">{{ subcategory.subcategory_name}}</a></li>
+        <li><a href="/{{subcategory.category.slug}}/{{subcategory.slug}}/{{site.slug}}/{{site.id}}">{{ site.name }}</a></li>
+    </ol>
+    {% endblock breadcrumb %} {% block mainbar %}
+    <h3>{{ site.name }}</h3><hr>
+    {% if site.group|safe == 'Premium' %}
+    <p>Strona {{ site.name }} znajduje się obecnie w grupie wpisów: <span class='premium'>{{ site.group }}</span>. Jest to obecnie najwyższa grupa wpisów. Jeśli chciałbyś zmienić grupę wpisu zaloguj sie do <a href="{% url 'admin:index' %}">panelu administracyjnego</a> i tam dokonaj modyfikacji.</p>
+    {% else %}
+    <p> Strona {{ site.name }} znajduje się obecnie w grupie wpisów: <span class='premium'>{{ site.group }}</span>. Jeśli chcesz zmienić grupę wpisu skorzystaj z poniższego formularza:
+        <form method="post" action="" class="form-horizontal">
+            {% csrf_token %}
+            {% bootstrap_form form layout='horizontal'%} <br>
+            {% bootstrap_button "Zatwierdź" size='large' button_type="submit" button_class="btn-primary btn-main-add" %}
+        </form>
+    {% endif %}
+    {% endblock mainbar %}
+</body>
+
+</html>

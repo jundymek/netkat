@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+{% extends "mainapp/base.html" %}
+{% load cache %}
+{% load staticfiles %}
+{% load bootstrap3 %}
+{% bootstrap_css %}
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        {% block title %}
+            <title>Katalog netnet24.eu - kontakt</title>
+        {% endblock title %}
+        
+    </head>
+    {% block menu %}
+        <li><a href="{% url 'index' %}" title="Powrót do strony głównej">Home <span class="sr-only">(current)</span></a></li>
+        <li><a href="{% url 'regulamin' %}" title="Regulamin katalogu">Regulamin</a></li>
+        <li class="active"><a href="{% url 'contact' %}" title="Formularz kontaktowy">Kontakt</a></li>
+    {% endblock menu %}
+    <body>
+        {% block mainbar %}
+           <h3>Formularz kontaktowy</h3>
+        <form role="form" action="" method="post">
+            {% csrf_token %}
+            {% bootstrap_form form layout='vertical' %}
+            {% bootstrap_button "Wyślij wiadomość" size='medium' button_type="submit" button_class="btn-primary" %}
+        </form>
+        {% endblock mainbar %}
+    </body>
+</html>
