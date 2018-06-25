@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function($) {
     $('.alert').delay(9000).fadeOut();
     $('.bxslider').show().bxSlider({
         mode: 'fade',
@@ -30,7 +30,7 @@ $(document).ready(function() {
             $("label[for='id_kod'], #id_kod").slideToggle("fast");
             $("label[for='id_category1'], #id_category1, label[for='id_subcategory1'],#id_subcategory1").slideToggle("fast");
         }
-    })
+    });
 
     $('#id_category').change(function() {
         var $this = $(this);
@@ -48,7 +48,7 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
     $('#id_category1').change(function() {
         var $this = $(this);
         if ($this.find('option:selected').index() !== 0) {
@@ -65,7 +65,7 @@ $(document).ready(function() {
                 }
             })
         }
-    })
+    });
 
     // Sprawdzanie tytułu strony, dlugosci, zmiana klasy przy osiagnieciu maksimum
     if ($("#id_name").length != 0) {

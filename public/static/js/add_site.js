@@ -1,4 +1,4 @@
-$(function() {
+$(function($) {
 $("#formularz").on('submit', function(event) {
     event.preventDefault();
     CKEDITOR.instances.id_description.updateElement();
@@ -36,11 +36,11 @@ $("#formularz").on('submit', function(event) {
                             text: 'Ok',
                             btnClass: 'btn-red',
                             action: function() {}
-                        },
+                        }
                     }
                 });
             }
-        },
+        }
     });
 });
 });
