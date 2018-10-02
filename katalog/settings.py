@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'kronos',
     'ckeditor',
     'django_admin_listfilter_dropdown',
-    'captcha',
+    'snowpenguin.django.recaptcha2',
     'analytical',
 ]
 

@@ -4,13 +4,14 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.utils.html import strip_tags
-from django.conf import settings
 
 # Third-party app imports
 from constance import config
 from ckeditor.widgets import CKEditorWidget
 from urllib.parse import urlsplit
-from captcha.fields import ReCaptchaField
+
+from snowpenguin.django.recaptcha2.fields import ReCaptchaField
+from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
 
 # Imports form my apps
 from mainapp.models import Site, Group
@@ -165,11 +166,7 @@ class ContactForm(forms.Form):
         self.fields['contact_message'].label = "Wiadomość"
         if config.CAPTCHA == 'tak':
             self.fields['captcha'] = ReCaptchaField(
-                public_key=settings.CAPTCHA_PUBLIC,
-                private_key=settings.CAPTCHA_PRIVATE,
-                attrs={
-                    'theme': 'white',
-                })
+                widget=ReCaptchaWidget())
             self.fields['captcha'].label = "Kod zabezpieczacjący"
 
 
