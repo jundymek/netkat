@@ -3,6 +3,7 @@ import json
 from datetime import datetime, timedelta
 
 # Core Django imports
+from django.conf import settings
 from django.http import Http404, HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -276,9 +277,7 @@ def contact(request):
         contact_form = ContactForm()
 
     return render(request, 'mainapp/contact.html', {
-        'form': contact_form,
-    })
-
+        'form': contact_form, 'key': settings.RECAPTCHA_PUBLIC_KEY})
 
 def premium(request, id):
     context = {}
@@ -300,7 +299,7 @@ def premium(request, id):
                     site.date_end = datetime.now() + timedelta(days=site.group.days)
                 site.save()
                 messages.add_message(request, messages.SUCCESS, 'Strona {} została przeniesiona \
-                do grupy {}. Dziękujemy za korzystanie z naszego katalogu stron.'.format(site.url, site.group))
+            do grupy {}. Dziękujemy za korzystanie z naszego katalogu stron.'.format(site.url, site.group))
                 return redirect('index')
             else:
                 premium_form = PremiumForm()
