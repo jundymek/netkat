@@ -150,7 +150,7 @@ def add_site(request, category_slug, subcategory_slug):
             SendEmail(form_extended.cleaned_data['email'],
                       form_extended.cleaned_data['user'],
                       form_extended.cleaned_data['url'], host).send_confirmation_email()
-            return JsonResponse({'success': 'Strona {} została dodanaTT i przekazana do\
+            return JsonResponse({'success': 'Strona {} została dodana i przekazana do\
                 moderacji. O akceptacji zostaniesz powiadomiony emailem, który zostanie wysłany na\
                 adres {}.'.format(obj.url, obj.email)})
         else:
